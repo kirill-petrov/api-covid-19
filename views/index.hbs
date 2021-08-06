@@ -1,0 +1,129 @@
+<div class="container">
+
+  <div class="row">
+
+    <div class="col-2 mt-5 mb-3">
+
+      <form id="form" method="post">
+
+        <div class="mb-2">
+          <input type="date" name="after" id="afterId" class="form-control">
+        </div>
+
+        <div class="mb-2">
+          <input type="date" name="before" id="beforeId" class="form-control">
+        </div>
+
+        <button class="btn btn-primary">Show</button>
+      </form>
+    </div>
+    <div class="col-10">
+      <h1 class="mt-5 mb-3">Коронавирусная инфекция (COVID-19)</h1>
+      <p>(Канада)</p>
+    </div>
+  </div>
+  <hr>
+</div>
+
+{{#if data}}
+{{!-- <div class="container"> --}}
+  <figure class="highcharts-figure">
+    <div id="container">
+      <p class="highcharts-description">
+        Для каждого дня показано количество новых случаев, зарегистрированных после предыдущего дня.
+      </p>
+    </div>
+  </figure>
+  {{!--
+</div> --}}
+
+<script type="text/javascript">
+
+  
+
+  Highcharts.chart('container', {
+    chart: {
+      type: 'spline'
+    },
+    title: {
+      text: `Статистика за период - {{interval}}`
+    },
+    subtitle: {
+      text: 'Источник: api.covid19tracker.ca'
+    },
+    xAxis: {
+      type: 'datetime',
+      dateTimeLabelFormats: { // don't display the dummy year
+        month: '%e. %b',
+        year: '%b'
+      },
+      title: {
+        text: 'Дата'
+      }
+    },
+    yAxis: {
+      title: {
+        text: 'Количество случаев, чел.'
+      },
+      min: 0
+    },
+    tooltip: {
+      headerFormat: '<b>{series.name}</b><br>',
+      pointFormat: '{point.x:%e. %b}: {point.y:.2f} m'
+    },
+
+    plotOptions: {
+      series: {
+        marker: {
+          enabled: true
+        }
+      }
+    },
+
+    colors: ['#6CF', '#39F', '#06C', '#036', '#000'],
+
+    // Define the data points. All series have a dummy year
+    // of 1970/71 in order to be compared on the same x axis. Note
+    // that in JavaScript, months start at 0 for January, 1 for February etc.
+    series: [{
+      name: "Все случаи заболевания",
+      data: [
+          {{#each cases}}
+            {{this}},
+          {{/each}}
+      ]
+    }, {
+      name: "Выздоровело",
+      data: [
+          {{#each recoveries}}
+            {{this}},
+          {{/each}}
+      ]
+    }, {
+      name: "Летальные исходы",
+      data: [
+          {{#each fatalities}}
+            {{this}},
+          {{/each}}
+      ]
+    }],
+
+    responsive: {
+    rules: [{
+      condition: {
+        maxWidth: 500
+      },
+      chartOptions: {
+        plotOptions: {
+          series: {
+            marker: {
+              radius: 2.5
+            }
+          }
+        }
+      }
+    }]
+  }
+  });
+</script>
+{{/if}}
