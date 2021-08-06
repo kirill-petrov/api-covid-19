@@ -27,20 +27,26 @@ function dateToHighchatrs(dateStr) { // 2021-08-05
 
 router.get('/covid', async (req, res) => {
   const { after, before } = req.query;
-  const dataAPI = await getCovidData(after, before);
+  const covidData = await getCovidData(after, before);
+  // console.log(covidData);
+  // console.log(covidData.data);
 
-  res.send(`/stat?covid=${JSON.stringify({ data: dataAPI.data })}`);
+  // подключить session
+  req.session.covidData = covidData.data;
+  // console.log('rrrrrrr', req.session.covidData);
+  res.send('/stat');
+  // res.send(`/stat?covid=${JSON.stringify({ data: covidData.data })}`); // прикольный ход
 });
 
 router.get('/stat', (req, res) => {
-  const covidData = JSON.parse(req.query.covid);
+  const { covidData } = req.session;
 
   const cases = [];
   const recoveries = [];
   const fatalities = [];
-  const interval = `с ${covidData.data[0].date} по ${covidData.data[covidData.data.length - 1].date}`;
+  const interval = `с ${covidData[0].date} по ${covidData[covidData.length - 1].date}`;
 
-  covidData.data.forEach((el) => {
+  covidData.forEach((el) => {
     const date = dateToHighchatrs(el.date);
     const changeCases = el.change_cases;
     const changeRecoveries = el.change_recoveries;
@@ -56,7 +62,7 @@ router.get('/stat', (req, res) => {
   });
 
   res.render('index', {
-    data: covidData.data,
+    data: covidData,
     cases,
     recoveries,
     fatalities,
