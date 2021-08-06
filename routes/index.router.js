@@ -16,13 +16,6 @@ async function getCovidData(after, before) {
   }
 }
 
-router.get('/covid', async (req, res) => {
-  const { after, before } = req.query;
-  const dataAPI = await getCovidData(after, before);
-
-  res.send(`/stat?covid=${JSON.stringify({ data: dataAPI.data })}`);
-});
-
 function dateToHighchatrs(dateStr) { // 2021-08-05
   const [year, month, day] = dateStr.split('-');
   const yearN = Number(year);
@@ -32,13 +25,20 @@ function dateToHighchatrs(dateStr) { // 2021-08-05
   return `Date.UTC(${yearN}, ${monthN}, ${dayN})`;
 }
 
+router.get('/covid', async (req, res) => {
+  const { after, before } = req.query;
+  const dataAPI = await getCovidData(after, before);
+
+  res.send(`/stat?covid=${JSON.stringify({ data: dataAPI.data })}`);
+});
+
 router.get('/stat', (req, res) => {
   const covidData = JSON.parse(req.query.covid);
 
   const cases = [];
   const recoveries = [];
   const fatalities = [];
-  const interval = `${covidData.data[0].date} - ${covidData.data[covidData.data.length - 1].date}`;
+  const interval = `с ${covidData.data[0].date} по ${covidData.data[covidData.data.length - 1].date}`;
 
   covidData.data.forEach((el) => {
     const date = dateToHighchatrs(el.date);

@@ -1,6 +1,5 @@
 const express = require('express');
 const path = require('path');
-const hbs = require('hbs');
 
 const indexRouter = require('./routes/index.router');
 
@@ -9,7 +8,6 @@ const app = express();
 
 app.set('view engine', 'hbs');
 app.set('views', path.join(process.env.PWD, 'views'));
-hbs.registerPartials(path.join(process.env.PWD, 'views', 'partials'));
 
 app.use(express.static('public'));
 app.use(express.json());
