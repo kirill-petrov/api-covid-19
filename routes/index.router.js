@@ -27,18 +27,10 @@ function dateToHighchatrs(dateStr) { // 2021-08-05
 
 router.get('/covid', async (req, res) => {
   const { after, before } = req.query;
-  const covidData = await getCovidData(after, before);
-  // console.log(covidData);
-  // console.log(covidData.data);
+  const raw = await getCovidData(after, before);
+  req.session.covidData = raw.data;
 
-  // подключить session
-  req.session.covidData = covidData.data;
-  // console.log('rrrrrrr', req.session.covidData);
-  res.send('/stat');
-  // res.send(`/stat?covid=${JSON.stringify({ data: covidData.data })}`); // прикольный ход
-});
-
-router.get('/stat', (req, res) => {
+  // TODO refactor later
   const { covidData } = req.session;
 
   const cases = [];
