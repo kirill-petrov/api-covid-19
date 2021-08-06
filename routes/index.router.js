@@ -28,10 +28,7 @@ function dateToHighchatrs(dateStr) { // 2021-08-05
 router.get('/covid', async (req, res) => {
   const { after, before } = req.query;
   const raw = await getCovidData(after, before);
-  req.session.covidData = raw.data;
-
-  // TODO refactor later
-  const { covidData } = req.session;
+  const covidData = raw.data;
 
   const cases = [];
   const recoveries = [];
