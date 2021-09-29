@@ -1,3 +1,10 @@
-# api-covid-19
+# COVID-19 Statistic API
 
-https://www.highcharts.com/demo/spline-irregular-time
+## Install
+
+With [npm](https://npmjs.org/) installed, run
+```
+npm i
+
+npm start
+```
