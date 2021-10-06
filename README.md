@@ -6,6 +6,6 @@
 
 
 Стек:
-Express, Axios, Highcharts JS Charting Library, Handlebars, Bootstrap
+Express, Node JS, Axios, Highcharts JS Charting Library, Handlebars, Bootstrap
 
 
